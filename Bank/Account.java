@@ -1,84 +1,75 @@
+import java.util.Formatter;
+import java.util.regex.Pattern;
+
 import javax.swing.JOptionPane;
 
-public class Account {
-    private double accountBalance;
-    private String accountName;
-    private String accountID;
-    private int accountPin;
+public class Account extends Bank {
+    Formatter f = new Formatter();
 
-    public Account() {
+    Account() {
+        super(0.0, null, null, 0, false);
     }
 
-    public Account(double accountBalance, String accountName, String accountID, int accountPin) {
-        setAccountBalance(accountBalance);
-        setAccountName(accountName);
-        setAccountID(accountID);
-        setAccountPin(accountPin);
+    Account(double accountBalance, String accountName, String accountID, int accountPinCode, boolean isActive) {
+        super(accountBalance, accountName, accountID, accountPinCode, isActive);
     }
 
-    public double getAccountBalance() {
-        return accountBalance;
-    }
-
-    public void setAccountBalance(double accountBalance) {
-        try {
-            if (accountBalance <= 0)
-                prompt("Invalid account balance\nbalance should not be a negative number or zero", "Invalid balance!",
-                        0);
-            else
-                this.accountBalance = accountBalance;
-        } catch (Exception e) {
-            prompt(accountName, accountID, accountPin);
-        }
-    }
-
-    public String getAccountName() {
-        return accountName;
-    }
-
-    public void setAccountName(String accountName) {
-        try {
-            if (accountName.length() < 5)
-                prompt("Account name should\nhave more than five characters", "Invalid Name", 0);
-            else
-                this.accountName = accountName;
-        } catch (Exception e) {
-            prompt("" + e, "Error!", 0);
-        }
-    }
-
-    public String getAccountID() {
-        return accountID;
-    }
-
-    public void setAccountID(String accountID) {
-        try {
-            if (accountID.length() < 7)
-                prompt("Invalid account ID entered", "Invalid ID", 0);
-            else
-                this.accountID = accountID;
-        } catch (Exception e) {
-            prompt("" + e, "Error!", 0);
-        }
-    }
-
-    public int getAccountPin() {
-        return accountPin;
-    }
-
-    public void setAccountPin(int accountPin) {
-        try {
-            if (accountPin < 1000 && accountPin > 9999)
-                prompt("Invalid pin code\nshould be four digits long and should not start with zero", "Invalid pin", 0);
-            else
-                this.accountPin = accountPin;
-        } catch (Exception e) {
-            prompt("", "Error!", 0);
-        }
-    }
-
-    public void prompt(String message, String title, int type) {
+    // Making JOptionPane Message Dialog DRY
+    void prompt(String message, String title, int type) {
         JOptionPane.showMessageDialog(null, message, title, type);
+    }
+
+    // Validators
+    boolean validName() {
+        String name = getAccountName();
+        final boolean v = (name.length() >= 5) ? true : false;
+        return v;
+    }
+
+    boolean validID() {
+        String id = getAccountID();
+        final int l = 7;
+        // Pattern to check that string contains only integer
+        // values and it has a length of 7
+        final String regex = "^[1-9][0-9]{" + (l - 1) + "}$";
+        final boolean v = (Pattern.matches(regex, id)) ? true : false;
+        return v;
+    }
+
+    boolean validPinCode() {
+        int pin = getAccountPinCode();
+        final int l = 4;
+        final String regex = "^[1-9][0-9]{" + (l - 1) + "}$";
+        final boolean v = (Pattern.matches(regex, Integer.toString(pin))) ? true : false;
+        return v;
+    }
+
+    boolean allowedToCreate() {
+        boolean v;
+        if (validName() && validID() && validPinCode()) {
+            setAccountBalance(100.00);
+            v = true;
+        } else {
+            v = false;
+        }
+        return v;
+    }
+
+    public boolean createAccount() {
+        
+        return true;
+    }
+
+    void showAccountBalance() {
+        f.format("Your current account balance is $%2f%", accountBalance);
+        String value = f + "";
+        String value2 = f + " you do not have funds in your account";
+
+        if (accountBalance <= 0) {
+            prompt(value2, "Current Balance", 1);
+        } else {
+            prompt(value, "Current Balance", 1);
+        }
     }
 
 }
