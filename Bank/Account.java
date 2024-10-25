@@ -13,12 +13,12 @@ public class Account extends Bank {
         super(accountBalance, accountName, accountID, accountPinCode, isActive);
     }
 
-
-    // Making JOptionPane Message Dialog DRY
+    // Making JOptionPane Message Dialog DRY (Don't Repeat Yourself) Code
     void prompt(String message, String title, int type) {
         JOptionPane.showMessageDialog(null, message, title, type);
     }
 
+    // Making show message dialog code DRY
     String input(String message) {
         return JOptionPane.showInputDialog(message);
     }
@@ -65,7 +65,12 @@ public class Account extends Bank {
     boolean activateAccount() {
         boolean v;
         if (allowToCreate()) {
-            int op = JOptionPane.showOptionDialog(null, "Would you like to activate your account?",
+            StringBuilder str = new StringBuilder();
+            str.append("Your account has been created\n");
+            str.append("and credited with $" + getAccountBalance());
+            str.append("\n\nWould you like to activate your account?");
+
+            int op = JOptionPane.showOptionDialog(null, str,
                     "Activation Required",
                     JOptionPane.YES_NO_OPTION, 1,
                     null, null, null);
@@ -85,6 +90,7 @@ public class Account extends Bank {
         setAccountPinCode(Integer.parseInt(input("Enter your four digit pin code")));
 
         if (activateAccount()) {
+            displayMenuOne();
             v = true;
         } else {
             if (!validID()) {
@@ -103,10 +109,31 @@ public class Account extends Bank {
         return v;
     }
 
+    int displayMenuOne() {
+        StringBuilder cd = new StringBuilder();
+        cd.append("Welcome to Bank Of Java (BOJ)\n");
+        cd.append("1. Deposit Account\n");
+        cd.append("2. Show Account Balance\n");
+        cd.append("3. Withdraw Account\n");
+        cd.append("4. Change Pin Code\n");
+        cd.append("5. View Account Details\n");
+        cd.append("6. Exit");
+
+        int option = 0;
+
+        try {
+            option = Integer.parseInt(input(cd + "Select from options 1-6"));
+        } catch (Exception e) {
+            prompt("An Error Occurred" + e, "Error!", 0);
+        }
+
+        return option;
+    }
+
     int selectMainMenu() {
         StringBuilder b = new StringBuilder();
         b.append("---Small Java Bank---\n");
-        b.append("1. Open An Account\n");
+        b.append("1. Create An Account\n");
         b.append("2. View  Our Policy\n");
         b.append("3. Exit Menu\n");
         b.append("\nSelect from Options 1-3:");
@@ -117,6 +144,33 @@ public class Account extends Bank {
             prompt(e + "", "Error!", 0);
         }
         return option;
+    }
+
+    String ourPolicy() {
+        StringBuilder st = new StringBuilder();
+        st.append("---Bank Of Java---");
+        st.append("This bank gives you $100 when you create an account");
+        st.append("We give you the best");
+
+        return st + "";
+    }
+
+    void Switcher() {
+        int option = selectMainMenu();
+        switch (option) {
+            case 1:
+                createAccount();
+                break;
+            case 2:
+                prompt(ourPolicy(), "Our Policy", 1);
+                break;
+            case 3:
+                prompt("Thank you for using our service.", "Goodbye", 1);
+                break;
+            default:
+
+                break;
+        }
     }
 
     void showAccountBalance() {
@@ -134,5 +188,6 @@ public class Account extends Bank {
     public static void main(String[] args) {
         Account ac = new Account();
         System.out.println(ac.selectMainMenu());
+        ac.Switcher();
     }
 }
