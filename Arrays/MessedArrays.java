@@ -18,7 +18,7 @@ public class MessedArrays{
 
     public static void main(String[] args) {
         MessedArrays m = new MessedArrays();
-        String[] names = {"Kofi", "Ama", "Joe", "Yaw", "Kobi", "Aba"};
+        String[] names = {"Kofi", "Ama", "Joe", "Yaa", "Kobi", "Aba"};
 
         m.greetThem(names);
     }
