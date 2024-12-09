@@ -1,0 +1,13 @@
+public class SavingsAccount extends BankAccount{
+	double interestRate;
+
+	public SavingsAccount() {
+	super(accountNumber,accountHolderName,balance,isActive);
+	this.interestRate = 1;
+	}
+	
+	public double calculateInterest() {
+	return(getBalance + interestRate);
+	}
+
+}

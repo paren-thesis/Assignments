@@ -1,0 +1,38 @@
+public class BankAccount {
+	private int accountNumber;
+	private String accountHolderName;
+	private double balance;
+	private boolean isActive;
+
+	public BankAccount(int accountNumber, String accountHolderName, double balance, boolean isActive) {
+	this.accountNumber = accountNumber;
+	this.accountHolderName = accountHolderName;
+	this.balance = 0;
+	this.isActive = true;
+}
+
+	public int getAccountNumber() {
+	return accountNumber;
+}
+
+	public String getAccountHolderName() {
+	return accountHolderName;
+}
+
+	public double balance() {
+	return balance;
+}
+
+	public boolean isActive() {
+	return isActive;
+}
+
+	public void withdraw(double amount) {
+	if(isActive && amount <= getBalance()) {
+	balance -= amount;
+	System.out.printf("GHC %5.2f withdrawn, current balance GHC %5.2f",amount,getBalance()); 
+}
+
+}
+
+}

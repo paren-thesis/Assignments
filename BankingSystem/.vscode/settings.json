@@ -1,0 +1,13 @@
+{
+    "a-file-icon-vscode.arrowTheme": "material",
+    "a-file-icon-vscode.folderColor": "#888477",
+    "a-file-icon-vscode.saturation": 0.7,
+    "a-file-icon-vscode.activeIconPacks": [
+        "angular",
+        "ngrx",
+        "nest",
+        "react",
+        "redux",
+        "rails"
+    ]
+}
